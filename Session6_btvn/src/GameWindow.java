@@ -1,6 +1,8 @@
 import controllers.*;
 
-import models.GiftBoom;
+import controllers.Bombs.BombControllerManager;
+import controllers.Enemy.EnemyBulletControllerManager;
+import controllers.Enemy.EnemyControllerManager;
 import utils.Utils;
 
 import java.awt.*;
@@ -24,8 +26,7 @@ public class GameWindow extends Frame implements Runnable{
         System.out.println("Game window constructor");
         this.setVisible(true);
         this.setSize(600, 800);
-        this.setLocationRelativeTo(null);
-
+        this.setLocation(0, 0);
 
         this.addWindowListener(new WindowListener() {
             @Override
@@ -98,7 +99,7 @@ public class GameWindow extends Frame implements Runnable{
         PlaneController.instance.draw(bufferImageGraphic);
         EnemyControllerManager.instance.draw(bufferImageGraphic);
         EnemyBulletControllerManager.instance.draw(bufferImageGraphic);
-        GiftBoomManagerController.instance.draw(bufferImageGraphic);
+        BombControllerManager.instance.draw(bufferImageGraphic);
 
         g.drawImage(bufferedImage, 0, 0, null);
 
@@ -111,8 +112,9 @@ public class GameWindow extends Frame implements Runnable{
                 PlaneController.instance.run();
                 EnemyBulletControllerManager.instance.run();
                 EnemyControllerManager.instance.run();
-                GiftBoomManagerController.instance.run();
+                BombControllerManager.instance.run();
                 CollsionPool.instance.run();
+
 
                 Thread.sleep(17);
                 repaint();

@@ -2,7 +2,6 @@ package controllers;
 
 import java.awt.*;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -45,23 +44,6 @@ public class ControllerManager implements BaseController {
                     singleControllerIterator.remove();
                 } else {
                     singleController.run();
-                }
-            }
-        }
-    }
-
-    public void destroyForRadius(int radius, int x, int y) {
-        synchronized (this.singleControllerVector) {
-            Iterator<SingleController> singleControllerIterator =
-                    this.singleControllerVector.iterator();
-            while (singleControllerIterator.hasNext()) {
-                SingleController singleController = singleControllerIterator.next();
-                double deltaX = singleController.getGameObject().getX() - x;
-                double deltaY = singleController.getGameObject().getY() - y;
-                double distance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
-                distance = Math.sqrt(distance);
-                if(distance < radius) {
-                    singleController.getGameObject().destroy();
                 }
             }
         }

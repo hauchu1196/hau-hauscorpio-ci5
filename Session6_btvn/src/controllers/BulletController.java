@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.Enemy.EnemyController;
 import models.Bullet;
 import models.GameObjectWithHP;
 import views.GameDrawer;
@@ -27,7 +28,7 @@ public class BulletController extends SingleController implements Colliable {
 
     @Override
     public void onCollide(Colliable colliable) {
-        if (colliable instanceof EnemyController1) {
+        if (colliable instanceof EnemyController) {
             Bullet bullet = (Bullet)gameObject;
             ((GameObjectWithHP)colliable.getGameObject()).decreaseHP(bullet.getDamage());
             this.getGameObject().destroy();
