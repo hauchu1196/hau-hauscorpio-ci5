@@ -5,6 +5,8 @@ import controllers.PlaneController;
 import controllers.bombs.BombControllerManager;
 import controllers.enemies.EnemyBulletControllerManager;
 import controllers.enemies.EnemyControllerManager;
+import models.GameObjectWithHP;
+import models.Plane;
 import utils.Utils;
 
 import java.awt.*;
@@ -19,10 +21,11 @@ public class PlayGameScene implements GameScene {
 
     public PlayGameScene() {
         this.background = Utils.loadImage("resources/background.png");
-        reset();
+
     }
 
     private void reset() {
+
     }
 
     @Override
@@ -52,5 +55,8 @@ public class PlayGameScene implements GameScene {
         EnemyControllerManager.instance.run();
         BombControllerManager.instance.run();
         CollsionPool.instance.run();
+
+        System.out.println(((GameObjectWithHP)PlaneController.instance.getGameObject()).getHp());
+
     }
 }

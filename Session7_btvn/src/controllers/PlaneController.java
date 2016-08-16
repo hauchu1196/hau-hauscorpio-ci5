@@ -1,6 +1,10 @@
 package controllers;
+
 import controllers.gamescenes.GameSceneListener;
+import controllers.gamescenes.GameSceneManager;
+import controllers.gamescenes.OverGameScene;
 import models.Bullet;
+import models.GameObjectWithHP;
 import models.Plane;
 import views.GameDrawer;
 import views.ImageDrawer;
@@ -93,6 +97,18 @@ public class PlaneController extends SingleController
 //                );
 //                bulletManager.add(bulletController);
                 break;
+            case KeyEvent.VK_BACK_SPACE:
+                GameSceneManager.getInstance().pop();
+                gameSceneListener.changeGameScene(GameSceneManager.getInstance().top());
+        }
+    }
+
+    public void decreaseHP(int amount) {
+        ((GameObjectWithHP) gameObject).decreaseHP(amount);
+        /*TODO: If HP <= 0 => Change gamescene to Higscore or GameOver */
+        if (((GameObjectWithHP) gameObject).getHp() < 0) {
+            gameSceneListener.changeGameScene(new OverGameScene());
+            GameSceneManager.getInstance().push(new OverGameScene());
         }
     }
 
@@ -108,20 +124,20 @@ public class PlaneController extends SingleController
         this.gameVector.dx = 0;
         this.gameVector.dy = 0;
 
-        if(gameInput.keyDown && !gameInput.keyUp) {
+        if (gameInput.keyDown && !gameInput.keyUp) {
             this.gameVector.dy = SPEED;
-        } else if(!gameInput.keyDown && gameInput.keyUp) {
+        } else if (!gameInput.keyDown && gameInput.keyUp) {
             this.gameVector.dy = -SPEED;
         }
 
-        if(gameInput.keyLeft && !gameInput.keyRight) {
+        if (gameInput.keyLeft && !gameInput.keyRight) {
             this.gameVector.dx = -SPEED;
-        } else if(!gameInput.keyLeft && gameInput.keyRight) {
+        } else if (!gameInput.keyLeft && gameInput.keyRight) {
             this.gameVector.dx = SPEED;
         }
 
         if (gameInput.keySpace) {
-            if(count > ATK_SPEED) {
+            if (count > ATK_SPEED) {
                 BulletController bulletController = new BulletController(
                         new Bullet(this.gameObject.getMiddleX() - Bullet.WIDTH / 2, this.gameObject.getY()),
                         new ImageDrawer("resources/bullet.png")
@@ -136,7 +152,7 @@ public class PlaneController extends SingleController
 
     }
 
-    public final static PlaneController instance = new PlaneController(
+    public static PlaneController instance = new PlaneController(
             new Plane(250, 600),
             new ImageDrawer("resources/plane3.png")
     );
@@ -144,5 +160,9 @@ public class PlaneController extends SingleController
     @Override
     public void onCollide(Colliable colliable) {
 
+    }
+
+    public void reset() {
+        ((GameObjectWithHP) gameObject).reset();
     }
 }

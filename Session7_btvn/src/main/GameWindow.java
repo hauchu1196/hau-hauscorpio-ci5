@@ -5,15 +5,14 @@ import controllers.*;
 import controllers.bombs.BombControllerManager;
 import controllers.enemies.EnemyBulletControllerManager;
 import controllers.enemies.EnemyControllerManager;
-import controllers.gamescenes.GameScene;
-import controllers.gamescenes.GameSceneListener;
-import controllers.gamescenes.MenuGameScene;
+import controllers.gamescenes.*;
 import models.GameSetting;
 import utils.Utils;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.Stack;
 
 
 /**
@@ -27,11 +26,13 @@ public class GameWindow extends Frame implements Runnable, GameSceneListener {
     Thread thread;
     GameSetting gameSetting;
     GameScene currentGameScene;
+    GameSceneManager gameSceneManager;
 
 //    PlaneController planeController1;
 
     public GameWindow() {
         configUI();
+        gameSceneManager = GameSceneManager.getInstance();
         changeGameScene(new MenuGameScene());
 
 
@@ -62,7 +63,7 @@ public class GameWindow extends Frame implements Runnable, GameSceneListener {
         gameSetting = GameSetting.getInstance();
         this.setVisible(true);
         this.setSize(gameSetting.getScreenWidth(), gameSetting.getScreenHeight());
-        this.setLocation(0, 0);
+        this.setLocationRelativeTo(null);
 
         this.addWindowListener(new WindowListener() {
             @Override
@@ -125,8 +126,14 @@ public class GameWindow extends Frame implements Runnable, GameSceneListener {
 
     @Override
     public void changeGameScene(GameScene gameScene) {
+        try{
+            removeKeyListener(currentGameScene.getKeyListener());
+        } catch (NullPointerException e) {
+
+        }
         this.currentGameScene = gameScene;
         this.currentGameScene.setGameSceneListener(this);
         this.addKeyListener(gameScene.getKeyListener());
+        gameSceneManager.push(currentGameScene);
     }
 }

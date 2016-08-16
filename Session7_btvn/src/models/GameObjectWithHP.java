@@ -20,15 +20,18 @@ public class GameObjectWithHP extends GameObject {
 
     public void increaseHP(int amount) {
         this.hp += amount;
-        if(this.hp > maxHP)
+        if (this.hp > maxHP)
             this.hp = maxHP;
     }
 
-    public void decreaseHP (int amount)
-    {
+    public void decreaseHP(int amount) {
         this.hp -= amount;
-        if(this.hp < 0) {
+        if (this.hp < 0) {
             destroy();
         }
+    }
+
+    public void reset() {
+        this.hp = this.maxHP;
     }
 }

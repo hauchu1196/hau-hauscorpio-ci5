@@ -1,5 +1,7 @@
 package controllers.gamescenes;
 
+import controllers.PlaneController;
+import models.GameObjectWithHP;
 import utils.Utils;
 
 import java.awt.*;
@@ -43,6 +45,7 @@ public class MenuGameScene implements KeyListener, GameScene {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (gameSceneListener != null) {
                 gameSceneListener.changeGameScene(new PlayGameScene());
+                GameSceneManager.getInstance().push(new PlayGameScene());
             } else {
                 System.out.println(String.format("%s: gameSceneListener is not set", TAG));
             }
@@ -57,6 +60,7 @@ public class MenuGameScene implements KeyListener, GameScene {
 
     @Override
     public void run() {
-
+        PlaneController.instance.reset();
+        System.out.println(((GameObjectWithHP)PlaneController.instance.getGameObject()).getHp());
     }
 }
