@@ -9,14 +9,14 @@ import views.GameDrawer;
  * Created by Hau on 20/08/2016.
  */
 public class ShieldController extends SingleController implements Colliable {
-    private static final double RADIUS = 100;
-    private static final int SPEED = 4;
-    private static final int COOL_DOWN = 300;
-    private double angle = 0;
+    private double radian = 0;
+    private double RADIUS = 100;
+    private int SPEED = 8;
+    private int COOLDOWN = 1000;
     private int count;
-    private int countCd;
+    private int countcd;
 
-    public ShieldController(Shield gameObject, GameDrawer gameDrawer) {
+    public ShieldController(GameObject gameObject, GameDrawer gameDrawer) {
         super(gameObject, gameDrawer);
         CollisionPool.getInstance().add(this);
     }
@@ -32,18 +32,20 @@ public class ShieldController extends SingleController implements Colliable {
     public void run() {
         super.run();
         count++;
-        countCd++;
+        countcd++;
         if (count == SPEED) {
             count = 0;
-            gameVector.dx = (int) (PlaneController.getInstance().getGameObject().getX() + RADIUS * Math.cos(angle));
-            gameVector.dy = (int) (PlaneController.getInstance().getGameObject().getY() + RADIUS * Math.sin(angle));
-            angle++;
-            if (angle == 360) {
-                angle = 0;
+            this.getGameObject().moveTo(
+                    (int) (PlaneController.getInstance().getGameObject().getMiddleX() - RADIUS * Math.cos(radian)),
+                    (int) (PlaneController.getInstance().getGameObject().getMiddleY() - RADIUS * Math.sin(radian))
+            );
+            radian += 0.3;
+            if (radian == 360) {
+                radian = 0;
             }
         }
-        if (countCd == COOL_DOWN) {
-//            this.gameObject.destroy();
+        if (countcd == COOLDOWN) {
+            this.getGameObject().destroy();
         }
     }
 }
